@@ -34,6 +34,7 @@ t/html.t
 t/ideas
 t/misc.t
 t/rt-cpan-36104.t
+t/rt-cpan-37977.t
 t/selectors.t
 t/spreadily.html
 t/TestpQuery.pm
