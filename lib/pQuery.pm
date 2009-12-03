@@ -356,7 +356,7 @@ sub _nodeName {
 # sub attr {}
 
 sub _trim {
-    (my $string = $_[1]) =~ s/^\s+|\s+$//g;
+    (my $string = $_[1]) =~ s/^\s+|^\s*html\s*\>?\s*|\s+$//ig;
     return $string;
 }
 
@@ -525,7 +525,7 @@ sub _find {
                             $nodeName eq "*" or
                             uc($c->nodeName) eq $nodeName
                         )
-                    ) { push @$r, $c }
+                    ) { push @$r, $c };
                 }
             }
         }
@@ -637,7 +637,7 @@ sub _find {
         }
     }
 #     $ret = [] if $t;
-    die "selector error: $t" if $t;
+    die "selector error: '$t'" if $t;
 
     shift(@$ret) if $ret and @$ret and $context == $ret->[0];
 
