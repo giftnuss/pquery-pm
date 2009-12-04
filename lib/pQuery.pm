@@ -5,6 +5,7 @@ use 5.006001;
 use strict;
 use warnings;
 use pQuery::DOM;
+use Data::Dumper;
 use Carp;
 
 use base 'Exporter';
@@ -493,7 +494,7 @@ sub _multiFilter {
 
 sub _find {
     my ($this, $t, $context) = @_;
-
+#warn $t;
     return [ $t ]
         if ref($t);
 
@@ -516,10 +517,10 @@ sub _find {
 
         my $re = $quickChild;
 
-        if ($t =~ $re) {
+        if ($t =~ s/$re//) {
             $nodeName = uc($1);
             for (my $i = 0; $ret->[$i]; $i++) {
-                for (my $c = $ret->[$i]; $c; $c = $c->nextSiblingRef) {
+                for (my $c = $ret->[$i]->firstChildRef; $c; $c = $c->nextSiblingRef) {
                     if ($c->nodeType == 1 and
                         (
                             $nodeName eq "*" or
@@ -528,11 +529,14 @@ sub _find {
                     ) { push @$r, $c };
                 }
             }
+            if(@$r) {
+               $ret = $r;
+            }
         }
         else {
-            if ($t =~ s/^([>+~])\s*(\w*)//) {
+            if ($t =~ s/^([+~])\s*(\w*)//) {
                 $r = [];
-                
+
                 my $merge = {};
                 $nodeName = uc($2);
                 my $m = $1;
@@ -569,7 +573,7 @@ sub _find {
 
                 $done = $this._merge($done, $ret);
 
-                $r = $ret = [$context];      
+                $r = $ret = [$context];
 
                 $t = " $t";
             }
@@ -609,7 +613,7 @@ sub _find {
                             $ret->[$i]->getElementsByTagName($tag)
                         );
                     }
-                    
+
                     $r = $this->_classFilter($r, $m->[2])
                         if ($m->[1] eq ".");
 

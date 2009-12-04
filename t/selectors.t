@@ -1,4 +1,4 @@
-use t::TestpQuery tests => 23;
+use t::TestpQuery tests => 27;
 
 use pQuery;
 
@@ -65,3 +65,28 @@ is pQuery(':header')->size, 2,
     'Two Headers';
 
 is pQuery("table#table1")->size, 1, 'id after other selector';
+
+my $res = eval { pQuery('body > h3')->text };
+is($@, "", 'body > h3 works without dying ');
+is $res, 'The Intarweb is a Spreadsheet!', 'select an element by tag direct under tag';
+
+my $res = eval { pQuery('html > body > h3')->text };
+is($@, "", 'html > body > h3 works without dying ');
+is $res, 'The Intarweb is a Spreadsheet!', 'select an element by tag direct under tag with html > comes first';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

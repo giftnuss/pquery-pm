@@ -13,4 +13,4 @@ pQuery($html)->find('a.foo')->each(sub { $r.=$_->as_text });
 is($r,'1','found the first link by class name');
 
 __DATA__
-<html> <a class="foo">1</a> <a class="bar">2</a> </html>
+<html> <body><a class="foo">1</a> <a class="bar">2</a></body> </html>
